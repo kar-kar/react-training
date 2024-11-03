@@ -1,24 +1,25 @@
-import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import PageResult from './PageResult';
+import Movie from './Movie';
+import MovieList from './MovieList';
+
+async function fetchMovies(page: number) : Promise<PageResult<Movie>> {
+  const url = `https://api.themoviedb.org/3/discover/tv?page=${page}`;
+  const accessToken = process.env.REACT_APP_TMDB_ACCESS_TOKEN;
+  const response = await fetch(url, {
+    headers: {
+      'Authorization': `Bearer ${accessToken}`,
+      'Accept': 'application/json'
+    }
+  });
+  const data = await response.json();
+  return data;
+}
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <MovieList fetchPage={fetchMovies} />
     </div>
   );
 }
