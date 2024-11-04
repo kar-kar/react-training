@@ -7,8 +7,9 @@ interface MovieListProps {
     fetchPage: (page: number) => Promise<PageResult<Movie>>;
 }
 
-function MovieList(props: MovieListProps) {
+export default function MovieList(props: MovieListProps) {
     const [movies, setMovies] = useState<Movie[]>([]);
+    const [selectedMovieId, setSelectedMovieId] = useState<number | null>(null);
 
     useEffect(() => {
         async function fetchMovies() {
@@ -19,13 +20,18 @@ function MovieList(props: MovieListProps) {
         fetchMovies();
     }, [props]);
 
+    function handleMovieCardClick(movie: Movie) {
+        setSelectedMovieId(movie.id);
+    }
+
     return (
         <div className="movie-list">
             {movies.map((movie) => (
-                <MovieCard key={movie.id} movie={movie} />
+                <MovieCard key={movie.id}
+                    movie={movie}
+                    isSelected={movie.id === selectedMovieId}
+                    onClick={handleMovieCardClick} />
             ))}
         </div>
     );
 };
-
-export default MovieList;
