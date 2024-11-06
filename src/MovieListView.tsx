@@ -1,13 +1,14 @@
 import { useEffect, useState } from 'react';
 import Movie from './Movie';
-import MovieCard from './MovieCard';
+import MovieView from './MovieView';
 import PageResult from './PageResult';
 
-interface MovieListProps {
+interface MovieListViewProps {
     fetchPage: (page: number) => Promise<PageResult<Movie>>;
+    onMovieSelect: (movie: Movie) => void;
 }
 
-export default function MovieList(props: MovieListProps) {
+export default function MovieListView(props: MovieListViewProps) {
     const [movies, setMovies] = useState<Movie[]>([]);
     const [selectedMovieId, setSelectedMovieId] = useState<number | null>(null);
 
@@ -22,12 +23,13 @@ export default function MovieList(props: MovieListProps) {
 
     function handleMovieCardClick(movie: Movie) {
         setSelectedMovieId(movie.id);
+        props.onMovieSelect(movie);
     }
 
     return (
         <div className="movie-list">
             {movies.map((movie) => (
-                <MovieCard key={movie.id}
+                <MovieView key={movie.id}
                     movie={movie}
                     isSelected={movie.id === selectedMovieId}
                     onClick={handleMovieCardClick} />

@@ -1,25 +1,28 @@
 import './App.css';
-import PageResult from './PageResult';
 import Movie from './Movie';
-import MovieList from './MovieList';
+import MovieListView from './MovieListView';
+import MovieDetails from './MovieDetails';
+import MovieDetailsView from './MovieDetailsView';
+import * as TMDB from './TMDBApi';
+import { useState } from 'react';
 
-async function fetchMovies(page: number) : Promise<PageResult<Movie>> {
-  const url = `https://api.themoviedb.org/3/discover/tv?page=${page}`;
-  const accessToken = process.env.REACT_APP_TMDB_ACCESS_TOKEN;
-  const response = await fetch(url, {
-    headers: {
-      'Authorization': `Bearer ${accessToken}`,
-      'Accept': 'application/json'
-    }
-  });
-  const data = await response.json();
-  return data;
-}
 
 function App() {
+  const [selectedMovieDetails, setSelectedMovieDetails] = useState<MovieDetails | null>(null);
+
+  const handleMovieSelect = async (movie: Movie) => {
+    const details = await TMDB.fetchMovieDetails(movie.id);
+    setSelectedMovieDetails(details);
+  };
+
   return (
     <div className="App">
-      <MovieList fetchPage={fetchMovies} />
+      <MovieListView fetchPage={TMDB.fetchMovies}
+        onMovieSelect={handleMovieSelect} />
+
+      {selectedMovieDetails && (
+        <MovieDetailsView movie={selectedMovieDetails} />
+      )}
     </div>
   );
 }

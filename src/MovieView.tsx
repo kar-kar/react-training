@@ -1,12 +1,12 @@
 import Movie from './Movie';
 
-interface MovieCardProps {
+interface MovieViewProps {
     movie: Movie;
     isSelected: boolean;
     onClick: (movie: Movie) => void;
 }
 
-function MovieCard(props: MovieCardProps) {
+function MovieView(props: MovieViewProps) {
     return (
         <div title={props.movie.name}
             className={`movie-card ${props.isSelected ? 'selected' : ''}`}
@@ -18,4 +18,4 @@ function MovieCard(props: MovieCardProps) {
     );
 }
 
-export default MovieCard;
+export default MovieView;
