@@ -1,4 +1,4 @@
-import Movie from './Movie';
+import { Movie } from './Movie';
 
 interface MovieViewProps {
     movie: Movie;
@@ -8,11 +8,11 @@ interface MovieViewProps {
 
 function MovieView(props: MovieViewProps) {
     return (
-        <div title={props.movie.name}
+        <div title={props.movie.title}
             className={`movie-card ${props.isSelected ? 'selected' : ''}`}
             onClick={() => props.onClick(props.movie)}>
             <img src={`http://image.tmdb.org/t/p/w154${props.movie.poster_path}`}
-                alt={props.movie.name}
+                alt={props.movie.title}
                 className="movie-poster" />
         </div>
     );

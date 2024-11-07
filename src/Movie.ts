@@ -1,4 +1,12 @@
-export default interface Movie {
+export type MovieType = "movie" | "tv";
+
+export const MovieTypeDescriptions: { [key in MovieType]: string } = {
+    movie: "Movies",
+    tv: "TV Shows"
+};
+
+export interface Movie {
+    type: MovieType;
     adult: boolean;
     backdrop_path: string;
     genre_ids: number[];
@@ -9,8 +17,9 @@ export default interface Movie {
     overview: string;
     popularity: number;
     poster_path: string;
-    first_air_date: string;
-    name: string;
+    first_air_date?: string;
+    name?: string;
+    title?: string;
     vote_average: number;
     vote_count: number;
 }

@@ -1,27 +1,27 @@
 interface Genre {
     id: number;
     name: string;
-  }
-  
-  interface ProductionCompany {
+}
+
+interface ProductionCompany {
     id: number;
     logo_path: string | null;
     name: string;
     origin_country: string;
-  }
-  
-  interface ProductionCountry {
+}
+
+interface ProductionCountry {
     iso_3166_1: string;
     name: string;
-  }
-  
-  interface SpokenLanguage {
+}
+
+interface SpokenLanguage {
     english_name: string;
     iso_639_1: string;
     name: string;
-  }
-  
-  export default interface MovieDetails {
+}
+
+export default interface MovieDetails {
     adult: boolean;
     backdrop_path: string;
     budget: number;
@@ -47,4 +47,4 @@ interface Genre {
     video: boolean;
     vote_average: number;
     vote_count: number;
-  }
+}

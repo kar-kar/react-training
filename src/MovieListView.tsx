@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import Movie from './Movie';
+import { Movie } from './Movie';
 import MovieView from './MovieView';
 import PageResult from './PageResult';
 

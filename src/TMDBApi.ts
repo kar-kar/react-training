@@ -1,29 +1,51 @@
-import Movie from "./Movie";
+import { Movie } from "./Movie";
 import MovieDetails from "./MovieDetails";
 import PageResult from "./PageResult";
+import { SearchFilter, TvSortFieldMap } from "./SearchFilter";
 
-async function fetchMovies(page: number) : Promise<PageResult<Movie>> {
-    const url = `https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&page=${page}`;
-    const response = await fetch(url, {
-      headers: {
-        'Authorization': `Bearer ${process.env.REACT_APP_TMDB_ACCESS_TOKEN}`,
-        'Accept': 'application/json'
-      }
-    });
-    const data = await response.json();
-    return data;
+async function fetchTMDB<T>(url: string): Promise<T> {
+  var response = await fetch(url, {
+    headers: {
+      'Authorization': `Bearer ${process.env.REACT_APP_TMDB_ACCESS_TOKEN}`,
+      'Accept': 'application/json'
+    }
+  });
+
+  return await response.json();
 }
+
+export async function fetchMovies(filter: SearchFilter, page: number): Promise<PageResult<Movie>> {
+  let url = `https://api.themoviedb.org/3/discover/${filter.type}?page=${page}`;
+
+  if (filter.region)
+    url += `&region=${filter.region}`;
+
+  if (filter.language)
+    url += `&language=${filter.language}`;
+
+  if (filter.withGenres && filter.withGenres.length > 0)
+    url += `&with_genres=${filter.withGenres.join('|')}`;
+
+  if (filter.withoutGenres && filter.withoutGenres.length > 0)
+    url += `&without_genres=${filter.withoutGenres.join(',')}`;
+
+  if (filter.sortBy) {
+    const field = filter.type === 'tv' ? TvSortFieldMap[filter.sortBy] : filter.sortBy;
+    url += `&sort_by=${field}.${filter.sortDirection || 'desc'}`;
+  }
   
-async function fetchMovieDetails(id: number) : Promise<MovieDetails> {
-    const url = `https://api.themoviedb.org/3/movie/${id}`;
-    const response = await fetch(url, {
-      headers: {
-        'Authorization': `Bearer ${process.env.REACT_APP_TMDB_ACCESS_TOKEN}`,
-        'Accept': 'application/json'
-      }
-    });
-    const data = await response.json();
-    return data;
+  var movies = await fetchTMDB<PageResult<Movie>>(url);
+
+  for (const m of movies.results) {
+    m.title ||= m.name;
+    m.type = filter.type;
+  }
+
+  return movies;
 }
 
-export { fetchMovies, fetchMovieDetails };
+export function fetchMovieDetails(movie: Movie): Promise<MovieDetails> {
+  const url = `https://api.themoviedb.org/3/${movie.type}/${movie.id}`;
+  return fetchTMDB(url);
+}
+
