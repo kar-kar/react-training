@@ -33,19 +33,24 @@ export async function fetchMovies(filter: SearchFilter, page: number): Promise<P
     const field = filter.type === 'tv' ? TvSortFieldMap[filter.sortBy] : filter.sortBy;
     url += `&sort_by=${field}.${filter.sortDirection || 'desc'}`;
   }
-  
+
   var movies = await fetchTMDB<PageResult<Movie>>(url);
 
-  for (const m of movies.results) {
-    m.title ||= m.name;
-    m.type = filter.type;
+  if (movies.results && movies.results.length > 0) {
+    for (const m of movies.results) {
+      m.title ||= m.name;
+      m.type = filter.type;
+    }
   }
 
   return movies;
 }
 
-export function fetchMovieDetails(movie: Movie): Promise<MovieDetails> {
+export async function fetchMovieDetails(movie: Movie): Promise<MovieDetails> {
   const url = `https://api.themoviedb.org/3/${movie.type}/${movie.id}`;
-  return fetchTMDB(url);
+  let details = await fetchTMDB<MovieDetails>(url);
+  details.title ||= details.name;
+  details.release_date ||= details.first_air_date;
+  return details;
 }
 

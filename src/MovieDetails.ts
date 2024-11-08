@@ -24,7 +24,7 @@ interface SpokenLanguage {
 export default interface MovieDetails {
     adult: boolean;
     backdrop_path: string;
-    budget: number;
+    budget?: number;
     genres: Genre[];
     homepage: string;
     id: number;
@@ -37,13 +37,15 @@ export default interface MovieDetails {
     poster_path: string;
     production_companies: ProductionCompany[];
     production_countries: ProductionCountry[];
-    release_date: string;
-    revenue: number;
-    runtime: number;
+    release_date?: string;
+    first_air_date?: string;
+    revenue?: number;
+    runtime?: number;
     spoken_languages: SpokenLanguage[];
     status: string;
     tagline: string;
-    title: string;
+    title?: string;
+    name?: string;
     video: boolean;
     vote_average: number;
     vote_count: number;

@@ -25,8 +25,7 @@ function App() {
   return (
     <div className="App">
       <SearchFilterView filter={searchFilter} onFilterChange={handleFilterChange} />
-      <MovieListView fetchPage={page => TMDB.fetchMovies(searchFilter, page)}
-        onMovieSelect={handleMovieSelect} />
+      <MovieListView searchFilter={searchFilter} onMovieSelect={handleMovieSelect} />
       {selectedMovieDetails && (
         <MovieDetailsView movie={selectedMovieDetails} />
       )}
