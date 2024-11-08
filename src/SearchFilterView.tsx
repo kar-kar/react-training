@@ -1,5 +1,5 @@
 import { SearchFilter, SortField, SortFieldDescriptions } from "./SearchFilter";
-import { MovieType, MovieTypeDescriptions } from "./Movie";
+import { MovieType } from "./Movie";
 
 export interface SearchFilterViewProps {
     filter: SearchFilter;
@@ -9,8 +9,8 @@ export interface SearchFilterViewProps {
 export default function SearchFilterView(props: SearchFilterViewProps) {
     const { filter, onFilterChange } = props;
 
-    function handleTypeChange(event: React.ChangeEvent<HTMLSelectElement>) {
-        onFilterChange({ ...filter, type: event.target.value as any });
+    function handleTypeChange(event: React.ChangeEvent<HTMLInputElement>) {
+        onFilterChange({ ...filter, type: event.target.value as MovieType });
     }
 
     function handleSortByChange(event: React.ChangeEvent<HTMLSelectElement>) {
@@ -22,16 +22,14 @@ export default function SearchFilterView(props: SearchFilterViewProps) {
     }
 
     return (
-        <div>
-            <div>
-                <label>Type:</label>
-                <select value={filter.type} onChange={handleTypeChange}>
-                    {Object.keys(MovieTypeDescriptions).map((field) => (
-                        <option key={field} value={field}>
-                            {MovieTypeDescriptions[field as MovieType]}
-                        </option>
-                    ))}
-                </select>
+        <div className="search-filter">
+            <div role="group" className="btn-group type-filter">
+                <input type="radio" id="type-movie" name="type" value="movie" className="btn-check"
+                    checked={filter.type === "movie"} onChange={handleTypeChange} />
+                <label className="btn btn-outline-primary" htmlFor="type-movie">Movie</label>
+                <input type="radio" id="type-tv" name="type" value="tv" className="btn-check"
+                    checked={filter.type === "tv"} onChange={handleTypeChange} />
+                <label className="btn btn-outline-primary" htmlFor="type-tv">TV Show</label>
             </div>
             <div>
                 <label>Sort By:</label>

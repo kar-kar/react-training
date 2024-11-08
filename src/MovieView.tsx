@@ -7,13 +7,17 @@ interface MovieViewProps {
 }
 
 function MovieView(props: MovieViewProps) {
+    const posterPath = props.movie.poster_path || props.movie.backdrop_path;
+
     return (
         <div title={props.movie.title}
             className={`movie-card ${props.isSelected ? 'selected' : ''}`}
             onClick={() => props.onClick(props.movie)}>
-            <img src={`http://image.tmdb.org/t/p/w154${props.movie.poster_path}`}
-                alt={props.movie.title}
-                className="movie-poster" />
+            {posterPath
+                ? (<img src={`http://image.tmdb.org/t/p/w154${posterPath}`}
+                    alt={props.movie.title}
+                    className="movie-poster" />)
+                : (<div className="no-poster">{props.movie.title}</div>)}
         </div>
     );
 }

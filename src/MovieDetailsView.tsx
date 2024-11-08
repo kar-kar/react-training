@@ -16,12 +16,10 @@ export default function MovieDetailsView(props: MovieDetailsViewProps) {
             <p>Production Companies: {props.movie.production_companies.map((company) => company.name).join(', ')}</p>
             <p>Production Countries: {props.movie.production_countries.map((country) => country.name).join(', ')}</p>
             <p>Spoken Languages: {props.movie.spoken_languages.map((language) => language.name).join(', ')}</p>
-            {props.movie.revenue ? (
-                <p>Revenue: ${props.movie.revenue.toLocaleString()}</p>
-            ) : null}
-            {props.movie.budget ? (
-                <p>Budget: ${props.movie.budget.toLocaleString()}</p>
-            ) : null}
+            {props.movie.revenue &&
+                <p>Revenue: ${props.movie.revenue.toLocaleString()}</p>}
+            {props.movie.budget &&
+                <p>Budget: ${props.movie.budget.toLocaleString()}</p>}
             <p>Vote Average: {props.movie.vote_average}</p>
             <p>Vote Count: {props.movie.vote_count}</p>
         </div>

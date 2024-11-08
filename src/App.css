@@ -1,8 +1,16 @@
+.type-filter {
+  margin: 10px;
+}
+
+.type-filter label {
+  width: 100px;
+}
+
 .movie-card {
   border: 4px solid #ccc;
   margin: 10px;
-  width: 154px;
-  height: 231px;
+  width: 162px;
+  height: 239px;
 }
 
 .movie-card.selected {
@@ -17,6 +25,17 @@
 .movie-poster {
   width: 154px;
   height: 231px;
+}
+
+.no-poster {
+  width: 154px;
+  height: 231px;
+  background-color: #ccc;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  word-wrap: break-word;
 }
 
 .movie-list {
