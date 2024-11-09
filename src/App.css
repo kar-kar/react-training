@@ -1,4 +1,9 @@
-.type-filter {
+.search-filter-container {
+  display: flex;
+  align-items: center;
+}
+
+.search-filter {
   margin: 10px;
 }
 

@@ -8,9 +8,13 @@ import { useState } from 'react';
 import SearchFilterView from './SearchFilterView';
 import { SearchFilter } from './SearchFilter';
 
+const defaultSearchFilter: SearchFilter = {
+  type: 'movie',
+  sortBy: 'popularity'
+};
 
 function App() {
-  const [searchFilter, setSearchFilter] = useState<SearchFilter>({ type: 'movie' });
+  const [searchFilter, setSearchFilter] = useState<SearchFilter>(defaultSearchFilter);
   const [selectedMovieDetails, setSelectedMovieDetails] = useState<MovieDetails | null>(null);
 
   function handleFilterChange(filter: SearchFilter) {
