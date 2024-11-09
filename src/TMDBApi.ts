@@ -1,4 +1,5 @@
-import { Movie } from "./Movie";
+import { Genre } from "./Genre";
+import { Movie, MovieType } from "./Movie";
 import MovieDetails from "./MovieDetails";
 import PageResult from "./PageResult";
 import { SearchFilter, TvSortFieldMap } from "./SearchFilter";
@@ -54,3 +55,8 @@ export async function fetchMovieDetails(movie: Movie): Promise<MovieDetails> {
   return details;
 }
 
+export async function fetchGenres(type: MovieType): Promise<Genre[]> {
+  const url = `https://api.themoviedb.org/3/genre/${type}/list`;
+  const result = await fetchTMDB<{ genres: Genre[] }>(url);
+  return result.genres;
+}

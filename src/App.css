@@ -1,6 +1,6 @@
 .search-filter-container {
   display: flex;
-  align-items: center;
+  flex-wrap: wrap;
 }
 
 .search-filter {
@@ -9,6 +9,17 @@
 
 .type-filter label {
   width: 100px;
+}
+
+.sort-by label {
+  white-space: nowrap;
+}
+
+.genres-filter {
+  display: flex;
+  flex-wrap: wrap;
+  flex: 1 0 100%;
+  gap: 2px;
 }
 
 .movie-card {

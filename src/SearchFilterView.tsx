@@ -1,22 +1,59 @@
 import { SearchFilter, SortField } from "./SearchFilter";
 import { MovieType } from "./Movie";
+import { Genre } from "./Genre";
+import * as TMDB from "./TMDBApi";
+import { ChangeEvent, useEffect, useState } from "react";
 
 export interface SearchFilterViewProps {
     filter: SearchFilter;
     onFilterChange: (filter: SearchFilter) => void;
 }
 
-export default function SearchFilterView(props: SearchFilterViewProps) {
-    const { filter, onFilterChange } = props;
+export default function SearchFilterView({ filter, onFilterChange }: SearchFilterViewProps) {
+    const [movieGenres, setMovieGenres] = useState<Genre[]>([]);
+    const [tvGenres, setTvGenres] = useState<Genre[]>([]);
+    const [checkedGenres, setCheckedGenres] = useState<Set<number>>(new Set());
+    const genres = filter.type === "movie" ? movieGenres : tvGenres;
 
-    function handleTypeChange(event: React.ChangeEvent<HTMLInputElement>) {
+    useEffect(() => {
+        async function fetchGenres() {
+            const movieGenres = await TMDB.fetchGenres("movie");
+            const tvGenres = await TMDB.fetchGenres("tv");
+            setMovieGenres(movieGenres);
+            setTvGenres(tvGenres);
+        }
+
+        fetchGenres();
+    }, [])
+
+    function handleTypeChange(event: ChangeEvent<HTMLInputElement>) {
         const type = event.target.value as MovieType;
         const sortBy = type === "tv" && filter.sortBy === "revenue" ? "popularity" : filter.sortBy;
-        onFilterChange({ ...filter, type: type, sortBy: sortBy });
+        const genres = type === "movie" ? movieGenres : tvGenres;
+        var genreIds = genres.map(genre => genre.id).filter(id => checkedGenres.has(id));
+
+        onFilterChange({ ...filter, type: type, sortBy: sortBy, withGenres: genreIds });
     }
 
-    function handleSortByChange(event: React.ChangeEvent<HTMLInputElement>) {
+    function handleSortByChange(event: ChangeEvent<HTMLInputElement>) {
         onFilterChange({ ...filter, sortBy: event.target.value as SortField });
+    }
+
+    function handleGenreChange(event: ChangeEvent<HTMLInputElement>) {
+        const genreId = parseInt(event.target.value);
+        const checked = event.target.checked;
+        const newCheckedGenres = new Set(checkedGenres);
+
+        if (checked)
+            newCheckedGenres.add(genreId);
+        else
+            newCheckedGenres.delete(genreId);
+
+        setCheckedGenres(newCheckedGenres);
+
+        const genres = filter.type === "movie" ? movieGenres : tvGenres;
+        var genreIds = genres.map(genre => genre.id).filter(id => newCheckedGenres.has(id));
+        onFilterChange({ ...filter, withGenres: genreIds });
     }
 
     return (
@@ -43,6 +80,17 @@ export default function SearchFilterView(props: SearchFilterViewProps) {
                 <input type="radio" id="sort-by-date" value="primary_release_date" className="btn-check"
                     checked={filter.sortBy === "primary_release_date"} onChange={handleSortByChange} />
                 <label className="btn btn-outline-primary" htmlFor="sort-by-date">Newest</label>
+            </div>
+            <div className="search-filter genres-filter">
+                {genres.map(genre => (
+                    <div key={genre.id} className="genre-checkbox">
+                        <input type="checkbox" className="btn-check" id={`genre-check-${genre.id}`}
+                            value={genre.id}
+                            checked={checkedGenres.has(genre.id)}
+                            onChange={handleGenreChange} />
+                        <label className="btn" htmlFor={`genre-check-${genre.id}`}>{genre.name}</label>
+                    </div>
+                ))}
             </div>
         </div>);
 }

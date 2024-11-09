@@ -1,10 +1,5 @@
 export type MovieType = "movie" | "tv";
 
-export const MovieTypeDescriptions: { [key in MovieType]: string } = {
-    movie: "Movies",
-    tv: "TV Shows"
-};
-
 export interface Movie {
     type: MovieType;
     adult: boolean;
