@@ -23,14 +23,14 @@
 }
 
 .movie-card {
-  border: 4px solid #ccc;
-  margin: 10px;
-  width: 162px;
-  height: 239px;
+  border: 4px solid #ffffff;
+  width: 100px;
+  height: 146px;
+  border-radius: 4px;
 }
 
 .movie-card.selected {
-  border: 4px solid #0015ff;
+  border: 4px solid rgb(13, 110, 253);
 }
 
 .movie-title {
@@ -39,13 +39,14 @@
 }
 
 .movie-poster {
-  width: 154px;
-  height: 231px;
+  width: 92px;
+  height: 138px;
 }
 
 .no-poster {
-  width: 154px;
-  height: 231px;
+  width: 92px;
+  height: 138px;
+  font-size: small;
   background-color: #ccc;
   display: flex;
   justify-content: center;
@@ -57,4 +58,34 @@
 .movie-list {
   display: flex;
   flex-wrap: wrap;
+  margin: 10px;
+}
+
+.movie-list-pagination {
+  margin: 10px;
+}
+
+.movie-details {
+  margin: 10px;
+}
+
+.movie-details-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  border: 1px solid #ccc;
+  border-radius: 10px 0 0 10px;
+}
+
+.movie-details-info {
+  flex: 1;
+  padding: 20px;
+}
+
+.movie-details-poster {
+  margin: -1px;
+}
+
+.genre-badge {
+  margin-right: 4px;
 }

@@ -14,7 +14,7 @@ function MovieView(props: MovieViewProps) {
             className={`movie-card ${props.isSelected ? 'selected' : ''}`}
             onClick={() => props.onClick(props.movie)}>
             {posterPath
-                ? (<img src={`http://image.tmdb.org/t/p/w154${posterPath}`}
+                ? (<img src={`http://image.tmdb.org/t/p/w92${posterPath}`}
                     alt={props.movie.title}
                     className="movie-poster" />)
                 : (<div className="no-poster">{props.movie.title}</div>)}

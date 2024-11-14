@@ -27,9 +27,15 @@ export default function MovieListView(props: MovieListViewProps) {
             setMovies(page.results);
             setCanMoveForward(pageNumer < page.total_pages);
             setCanMoveBackward(pageNumer > 1);
+
+            if (page.results.length > 0) {
+                setSelectedMovieId(page.results[0].id);
+                onMovieSelect(page.results[0]);
+            }
         }
 
         fetchMovies();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [searchFilter, pageNumer]);
 
     function handleMovieCardClick(movie: Movie) {
@@ -55,11 +61,17 @@ export default function MovieListView(props: MovieListViewProps) {
                         onClick={handleMovieCardClick} />
                 ))}
             </div>
-            <div className="movie-list-pagination">
-                <button disabled={!canMoveBackward} onClick={handleMoveBackward}>Previous</button>
-                <button disabled={!canMoveForward} onClick={handleMoveForward}>Next</button>
-            </div>
-        </div>
-
-    );
+            <nav className="movie-list-pagination">
+                <ul className="pagination">
+                    <li className="page-item">
+                        <button className={`page-link ${!canMoveBackward ? 'disabled' : ''}`} 
+                            onClick={handleMoveBackward}>Previous</button>
+                    </li>
+                    <li className="page-item">
+                        <button className={`page-link ${!canMoveForward ? 'disabled' : ''}`}
+                            onClick={handleMoveForward}>Next</button>
+                    </li>
+                </ul>
+            </nav>
+        </div>);
 };
