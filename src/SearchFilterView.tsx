@@ -1,15 +1,15 @@
-import { SearchFilter, SortField } from "./SearchFilter";
+import { SortField } from "./SearchFilter";
 import { MovieType } from "./Movie";
 import { Genre } from "./Genre";
 import * as TMDB from "./TMDBApi";
 import { ChangeEvent, useEffect, useState } from "react";
+import { searchFilterChanged, useAppDispatch, useAppSelector } from "./store";
 
-export interface SearchFilterViewProps {
-    filter: SearchFilter;
-    onFilterChange: (filter: SearchFilter) => void;
-}
+export default function SearchFilterView() {
 
-export default function SearchFilterView({ filter, onFilterChange }: SearchFilterViewProps) {
+    const filter = useAppSelector(state => state.movieList.searchFilter);
+    const dispatch = useAppDispatch();
+
     const [movieGenres, setMovieGenres] = useState<Genre[]>([]);
     const [tvGenres, setTvGenres] = useState<Genre[]>([]);
     const [checkedGenres, setCheckedGenres] = useState<Set<number>>(new Set());
@@ -31,12 +31,11 @@ export default function SearchFilterView({ filter, onFilterChange }: SearchFilte
         const sortBy = type === "tv" && filter.sortBy === "revenue" ? "popularity" : filter.sortBy;
         const genres = type === "movie" ? movieGenres : tvGenres;
         var genreIds = genres.map(genre => genre.id).filter(id => checkedGenres.has(id));
-
-        onFilterChange({ ...filter, type: type, sortBy: sortBy, withGenres: genreIds });
+        dispatch(searchFilterChanged({ ...filter, type: type, sortBy: sortBy, withGenres: genreIds }));
     }
 
     function handleSortByChange(event: ChangeEvent<HTMLInputElement>) {
-        onFilterChange({ ...filter, sortBy: event.target.value as SortField });
+        dispatch(searchFilterChanged({ ...filter, sortBy: event.target.value as SortField }));
     }
 
     function handleGenreChange(event: ChangeEvent<HTMLInputElement>) {
@@ -53,7 +52,7 @@ export default function SearchFilterView({ filter, onFilterChange }: SearchFilte
 
         const genres = filter.type === "movie" ? movieGenres : tvGenres;
         var genreIds = genres.map(genre => genre.id).filter(id => newCheckedGenres.has(id));
-        onFilterChange({ ...filter, withGenres: genreIds });
+        dispatch(searchFilterChanged({ ...filter, withGenres: genreIds }));
     }
 
     return (
